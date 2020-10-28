@@ -6,11 +6,14 @@ body {
   ol, ul {
     padding-left: 30px;
   }
+  li {
+    margin-bottom: 10px;
+  }
   
   .board-row:after {
     clear: both;
     content: "";
-    //display: table;
+    display: table;
   }
   
   .status {
@@ -40,12 +43,21 @@ body {
     background: #ddd;
   }
   
-  .game {
+  .game{
     display: flex;
     flex-direction: row;
   }
-  
   .game-info {
-    margin-left: 20px;
+    margin-left: 25px;
   }
-  
+  .new-game-button{
+    margin-bottom: 10px;
+  }
+  .game-board{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .sub_game_info{
+    display: flex;
+  }
