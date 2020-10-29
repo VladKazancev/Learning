@@ -52,6 +52,7 @@ function Square (props) {
             }],
             IsOver: false,
             curent_button: -1,
+            IsDESC: false,
         };
     }
     
@@ -96,6 +97,13 @@ function Square (props) {
         }],
         xIsNext: true,
         stepNumber: 0,
+        isOver: false,
+      });
+    }
+
+    sort(){
+      this.setState({
+        IsDESC: !this.state.IsDESC,
       });
     }
 
@@ -120,6 +128,9 @@ function Square (props) {
         if(this.state.IsOver){
           moves = moves.slice(0, moves.length - 1);
         }
+        if(this.state.IsDESC){
+          moves = moves.reverse();
+        }
 
       return (
         <div className="game">
@@ -132,7 +143,11 @@ function Square (props) {
           </div>
           <div className="game-info">
             <div className = "new-game-button">{status}</div>
-            <button onClick = {() => this.jumpTo(0)}>К началу игры</button>
+            <div style = {{display: "flex"}}>
+              <button onClick = {() => this.jumpTo(0)}>К началу игры</button>
+              <div style = {{marginLeft: "7px", marginRight: "7px"}}>Sort DESC:</div>
+              <input style = {{transform: "scale(1.4)"}} type = "checkbox" onChange = {() => this.sort()} />
+            </div>
             <ol>{moves}</ol>
             <button onClick = {() => this.jumpTo(this.state.current_square.length - 1)}>Конец игры</button>
           </div>
