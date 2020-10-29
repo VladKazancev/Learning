@@ -61,3 +61,6 @@ body {
   .sub_game_info{
     display: flex;
   }
+  .current{
+    background-color: turquoise;
+  }

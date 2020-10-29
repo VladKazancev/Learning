@@ -19,26 +19,21 @@ function Square (props) {
         />
        );
     }
-  
-    render() {     
+    go(){
+      return (<div>Привет</div>);
+    }
+    render() {
+      const renderingBoard = [];
+      let renderingRow = [];
+      for(let i = 0; i < 3; i++){
+        for(let j = 0; j < 3; j++){
+          renderingRow.push(this.renderSquare(i*3 + j));
+        }
+      renderingBoard.push(<div className="board-row">{renderingRow}</div>);
+      renderingRow = [];
+      }
       return (
-        <div>
-          <div className="board-row">
-            {this.renderSquare(0)}
-            {this.renderSquare(1)}
-            {this.renderSquare(2)}
-          </div>
-          <div className="board-row">
-            {this.renderSquare(3)}
-            {this.renderSquare(4)}
-            {this.renderSquare(5)}
-          </div>
-          <div className="board-row">
-            {this.renderSquare(6)}
-            {this.renderSquare(7)}
-            {this.renderSquare(8)}
-          </div>
-        </div>
+      <div>{renderingBoard}</div>
       );
     }
   }
@@ -56,6 +51,7 @@ function Square (props) {
                 square: Array(2).fill(null)
             }],
             IsOver: false,
+            curent_button: -1,
         };
     }
     
@@ -66,16 +62,11 @@ function Square (props) {
             this.state.stepNumber + 1);
         const current_history = history[history.length - 1];
         const squares = current_history.squares.slice();
-        if(calculateWinner(squares)){
-          this.setState({
-            IsOver : true,
-          });
-          if(squares[i]){
+        if(calculateWinner(squares) || squares[i]){
             return;
           }
-        }
         squares[i] = this.state.xIsNext ? 'X' : '0';
-        const a = calculateWinner(squares) ? true : false;
+        const isOver = calculateWinner(squares) ? true : false;
         this.setState({
             history: history.concat([{
                 squares : squares,
@@ -85,7 +76,8 @@ function Square (props) {
             current_square: current_square.concat([{
               square: [Math.floor(i/3) + 1, i%3 + 1],
             }]),
-            IsOver: a,
+            IsOver: isOver,
+            curent_button: -1,
         });
       }
 
@@ -93,6 +85,7 @@ function Square (props) {
         this.setState({
             stepNumber: step,
             xIsNext: (step%2) === 0,
+            curent_button: step,
         });
     }
 
@@ -118,7 +111,7 @@ function Square (props) {
                 <li key = {move}>
                   <div className = "sub_game_info">
                     <div style = {{marginRight: "7px"}}>({current_square})</div>
-                    <button onClick = {() => this.jumpTo(move)}>{desc}</button>
+                    <button className = {move === this.state.curent_button && "current"} onClick = {() => this.jumpTo(move)}>{desc}</button>
                   </div>
                 </li>
             );
@@ -147,7 +140,7 @@ function Square (props) {
       );
     }
   }
-  
+    
   function calculateWinner(squares) {
     const lines = [
       [0, 1, 2],
@@ -167,7 +160,7 @@ function Square (props) {
     }
     return null;
   }
-  
+
   ReactDOM.render(
     <Game />,
     document.getElementById('root')
